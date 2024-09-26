@@ -10,15 +10,18 @@ public class Player : MonoBehaviour
     public Transform bombsTransform;
 
     public float maxspeed = 3f;
-    public float timetoreachspeed = 2f;
+    public float accelerationtime = 2f;
 
     private Vector3 velocity = Vector3.zero;
     public float acceleration = 1f;
+    public float decelerationtime = 2f;
+    public float deceleration = 1f;
 
     private void Start()
     {
 
-        acceleration = maxspeed / timetoreachspeed;
+        acceleration = maxspeed / accelerationtime;
+        deceleration = maxspeed / decelerationtime;
  
     }
 
@@ -44,6 +47,14 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.DownArrow))
         {
             velocity += Vector3.down * acceleration * Time.deltaTime;
+        }
+        if(Input.GetKeyUp(KeyCode.UpArrow)|| Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.RightArrow)|| Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            if(velocity.magnitude > 0)
+            {
+                Debug.Log("get up");
+                velocity -= Vector3.up * deceleration * Time.deltaTime;
+            }
         }
         //velocity = velocity.normalized * speed;
         //fix this
