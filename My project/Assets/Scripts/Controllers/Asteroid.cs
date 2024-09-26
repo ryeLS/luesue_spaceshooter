@@ -12,22 +12,24 @@ public class Asteroid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        randomPoint.x = Random.Range(-maxFloatDistance, maxFloatDistance);// works now
+        randomPoint.y = Random.Range(-maxFloatDistance, maxFloatDistance);
     }
 
     // Update is called once per frame
     void Update()
     {
-        asteroidmovement(maxFloatDistance);
-        if(Vector3.Distance(transform.position, randomPoint) >= arrivalDistance)
+        asteroidmovement();
+        if(Vector3.Distance(transform.position, randomPoint) <= arrivalDistance)
         {
-            asteroidmovement(maxFloatDistance);
+            randomPoint.x = Random.Range(-maxFloatDistance, maxFloatDistance);
+            randomPoint.y = Random.Range(-maxFloatDistance, maxFloatDistance);
+            Debug.Log("changed destination");
+            asteroidmovement();
         }
     }
-    public void asteroidmovement(float randomDistance)
+    public void asteroidmovement()
     {
-        randomPoint.x = Random.Range(1, randomDistance);
-        randomPoint.y = Random.Range(1, randomDistance);
-
         Vector3 betweenVectors = randomPoint - transform.position;
         betweenVectors.z = 0;
         transform.position += betweenVectors * moveSpeed * Time.deltaTime;
