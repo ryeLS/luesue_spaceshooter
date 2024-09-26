@@ -46,9 +46,13 @@ public class Player : MonoBehaviour
             velocity += Vector3.down * acceleration * Time.deltaTime;
         }
         //velocity = velocity.normalized * speed;
-         //fix this
-         //find magnitude (its in the sliders) for the velocity and have an if statement for if magnitude>maxspeed
-        velocity = velocity.normalized * maxspeed;
+        //fix this
+        //find magnitude (its in the sliders) for the velocity and have an if statement for if magnitude>maxspeed
+        if (velocity.magnitude >= maxspeed)
+        {
+            Debug.Log("max speed reached");//testing
+            velocity = velocity.normalized * maxspeed;
+        }
         
         
         transform.position += velocity * Time.deltaTime;
