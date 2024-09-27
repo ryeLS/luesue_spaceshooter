@@ -20,18 +20,19 @@ public class Asteroid : MonoBehaviour
     void Update()
     {
         asteroidmovement();
-        if(Vector3.Distance(transform.position, randomPoint) <= arrivalDistance)
-        {
-            randomPoint.x = Random.Range(-maxFloatDistance, maxFloatDistance);
-            randomPoint.y = Random.Range(-maxFloatDistance, maxFloatDistance);
-            Debug.Log("changed destination");
-            asteroidmovement();
-        }
+        //if(Vector3.Distance(transform.position, randomPoint) <= arrivalDistance)
+        //{
+        //    randomPoint.x = Random.Range(-maxFloatDistance, maxFloatDistance);
+        //    randomPoint.y = Random.Range(-maxFloatDistance, maxFloatDistance);
+        //    Debug.Log("changed destination");
+        //    asteroidmovement();
+        //}
     }
     public void asteroidmovement()
     {
-        Vector3 betweenVectors = randomPoint - transform.position;
-        betweenVectors.z = 0;
-        transform.position += betweenVectors * moveSpeed * Time.deltaTime;
+        //Vector3 betweenVectors = randomPoint - transform.position;
+        //betweenVectors.z = 0;
+        //transform.position += betweenVectors * moveSpeed * Time.deltaTime;
     }
+
 }
