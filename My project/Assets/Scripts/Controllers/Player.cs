@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using static UnityEngine.UI.Image;
 
 public class Player : MonoBehaviour
 {
@@ -17,9 +19,17 @@ public class Player : MonoBehaviour
     //public float decelerationtime = 2f;
     //public float deceleration = 1f;
 
+    public int numOfPoints = 6;
+    float angle;
+    float fixedAngle;
+    public float radarRadius;
+    Color colour = Color.green;
+
+
     private void Start()
     {
-
+        angle = 360 / numOfPoints;
+        fixedAngle = angle;
         acceleration = maxspeed / accelerationtime;
         //deceleration = maxspeed / decelerationtime;
  
@@ -27,7 +37,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        PlayerMovement(); 
+        radarRadius = 1;
+        PlayerMovement();
+        EnemyRadar(radarRadius, numOfPoints);
     }
     void PlayerMovement()
     {
@@ -72,6 +84,32 @@ public class Player : MonoBehaviour
         
         transform.position += velocity * Time.deltaTime;
 
+    }
+    public void EnemyRadar(float radius, int circlePoints)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        for (int i = 0; i<circlePoints; i++)
+        {
+            float x = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+            float y = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
+        
+            points.Add(new Vector3(x + transform.position.x, y + transform.position.y));
+            angle += fixedAngle;
+
+            x = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+            y = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
+
+            points.Add(new Vector3(x + transform.position.x, y + transform.position.y));
+
+            Debug.DrawLine(points[i], points[i+1], colour);
+            angle += fixedAngle;
+        }
+        float distance = Vector3.Distance(enemyTransform.position, transform.position);
+        if(distance <= radius)
+        {
+            colour = Color.red;
+        }
     }
 
 }
