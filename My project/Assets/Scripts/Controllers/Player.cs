@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public Transform bombsTransform;
+    public GameObject powerupPrefab;
 
     public float maxspeed = 3f;
     public float accelerationtime = 2f;
@@ -22,14 +23,21 @@ public class Player : MonoBehaviour
     public int numOfPoints = 6;
     float angle;
     float fixedAngle;
-    public float radarRadius;
+    public float radarRadius = 1;
     Color colour = Color.green;
 
+    public int numOfPowerups = 4;
+    public float powerUpRadius = 3;
+    public float powerUpAngle;
+    public float powerFixedAngle;
 
     private void Start()
     {
         angle = 360 / numOfPoints;
+        powerUpAngle = 360 / numOfPowerups;
+
         fixedAngle = angle;
+        powerFixedAngle = powerUpAngle;
         acceleration = maxspeed / accelerationtime;
         //deceleration = maxspeed / decelerationtime;
  
@@ -37,9 +45,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        radarRadius = 1;
         PlayerMovement();
         EnemyRadar(radarRadius, numOfPoints);
+        SpawnPowerups(powerUpRadius, numOfPowerups);
     }
     void PlayerMovement()
     {
@@ -109,6 +117,21 @@ public class Player : MonoBehaviour
         if(distance <= radius)
         {
             colour = Color.red;
+        }
+    }
+    public void SpawnPowerups(float radius, int numberOfPowerups)
+    {
+        List<Vector3> power = new List<Vector3>();
+
+        for (int i = 0; i < numberOfPowerups; i++)
+        {
+            float x = Mathf.Cos(Mathf.Deg2Rad * powerUpAngle) * radius;
+            float y = Mathf.Sin(Mathf.Deg2Rad * powerUpAngle) * radius;
+
+            power.Add(new Vector3(x + transform.position.x, y + transform.position.y));
+
+            Instantiate(powerupPrefab, power[i], Quaternion.identity);
+            powerUpAngle += powerFixedAngle;
         }
     }
 
