@@ -31,6 +31,12 @@ public class Player : MonoBehaviour
     public float powerUpAngle;
     public float powerFixedAngle;
 
+    public float numOfBombs = 3;
+    public float bombSpeed = 2;
+    public float bombAngle;
+    public float bombFixedAngle;
+    public float bombRadius = 1;
+
     private void Start()
     {
         angle = 360 / numOfPoints;
@@ -39,6 +45,9 @@ public class Player : MonoBehaviour
         fixedAngle = angle;
         powerFixedAngle = powerUpAngle;
         acceleration = maxspeed / accelerationtime;
+
+        bombAngle = 360 / numOfBombs;
+        bombFixedAngle = bombAngle;
         //deceleration = maxspeed / decelerationtime;
  
     }
@@ -46,6 +55,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+        if (Input.GetKey(KeyCode.S))
+        {
+            BombShield();
+        }
         //EnemyRadar(radarRadius, numOfPoints);
         //SpawnPowerups(powerUpRadius, numOfPowerups);
     }
@@ -131,6 +144,22 @@ public class Player : MonoBehaviour
             power.Add(new Vector3(x + transform.position.x, y + transform.position.y));
 
             Instantiate(powerupPrefab, power[i], Quaternion.identity);
+            powerUpAngle += powerFixedAngle;
+        }
+    }
+    public void BombShield()
+    {
+        List<Vector3> bombs = new List<Vector3>();
+
+        for (int i = 0; i < numOfBombs; i++)
+        {
+            float x = Mathf.Cos(Mathf.Deg2Rad * powerUpAngle) * bombRadius;
+            float y = Mathf.Sin(Mathf.Deg2Rad * powerUpAngle) * bombRadius;
+
+            bombs.Add(new Vector3(x + transform.position.x, y + transform.position.y));
+
+            Instantiate(bombPrefab, bombs[i], Quaternion.identity);
+            //because its only when s is pressed it doesnt follow. figure that out pooks
             powerUpAngle += powerFixedAngle;
         }
     }

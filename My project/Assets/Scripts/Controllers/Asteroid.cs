@@ -59,7 +59,6 @@ public class Asteroid : MonoBehaviour
                 chunks.Add(new Vector3(x + transform.position.x, y + transform.position.y));
                 spawnedChunks.transform.localScale = transform.localScale / 2;
                 Instantiate(spawnedChunks, chunks[i], Quaternion.identity);
-                //Vector3 scale = new Vector3(transform.localScale * 0.5f);
                 
                 angle += fixedAngle;
             }
