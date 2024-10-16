@@ -46,8 +46,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMovement();
-        EnemyRadar(radarRadius, numOfPoints);
-        SpawnPowerups(powerUpRadius, numOfPowerups);
+        //EnemyRadar(radarRadius, numOfPoints);
+        //SpawnPowerups(powerUpRadius, numOfPowerups);
     }
     void PlayerMovement()
     {
