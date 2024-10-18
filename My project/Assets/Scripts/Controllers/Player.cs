@@ -31,11 +31,12 @@ public class Player : MonoBehaviour
     public float powerUpAngle;
     public float powerFixedAngle;
 
-    public float numOfBombs = 3;
+    public int numOfBombs = 3;
     public float bombSpeed = 2;
     public float bombAngle;
     public float bombFixedAngle;
     public float bombRadius = 1;
+    float timer;
 
     private void Start()
     {
@@ -54,11 +55,14 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        timer = bombSpeed * Time.deltaTime;
         PlayerMovement();
-        if (Input.GetKey(KeyCode.S))
-        {
-            BombShield();
-        }
+
+        BombShield();
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    BombShield();
+        //}
         //EnemyRadar(radarRadius, numOfPoints);
         //SpawnPowerups(powerUpRadius, numOfPowerups);
     }
@@ -150,18 +154,34 @@ public class Player : MonoBehaviour
     public void BombShield()
     {
         List<Vector3> bombs = new List<Vector3>();
+        List<GameObject> bombPrefabs = new List<GameObject>();
 
         for (int i = 0; i < numOfBombs; i++)
         {
-            float x = Mathf.Cos(Mathf.Deg2Rad * powerUpAngle) * bombRadius;
-            float y = Mathf.Sin(Mathf.Deg2Rad * powerUpAngle) * bombRadius;
+            float x = Mathf.Cos(Mathf.Deg2Rad * bombAngle) * bombRadius;
+            float y = Mathf.Sin(Mathf.Deg2Rad * bombAngle) * bombRadius;
 
-            bombs.Add(new Vector3(x + transform.position.x, y + transform.position.y));
+            Vector3 xy = new Vector3(x + transform.position.x, y + transform.position.y);
+            
+            bombPrefabs.Add((GameObject)Instantiate(bombPrefab, xy, Quaternion.identity));
 
-            Instantiate(bombPrefab, bombs[i], Quaternion.identity);
-            //because its only when s is pressed it doesnt follow. figure that out pooks
-            powerUpAngle += powerFixedAngle;
+            bombAngle += bombFixedAngle;
+
+            x = Mathf.Cos(Mathf.Deg2Rad * bombAngle) * bombRadius;
+            y = Mathf.Sin(Mathf.Deg2Rad * bombAngle) * bombRadius;
+            xy = new Vector3(x + transform.position.x, y + transform.position.y);
+            bombs.Add(xy);
+
+            bombPrefabs[i].transform.position = Vector3.MoveTowards(bombPrefabs[i].transform.position, bombs[i], timer);
+            
+            if(i == numOfBombs)//resets count so it repeats
+            {
+                bombPrefabs[numOfBombs].transform.position = Vector3.MoveTowards(bombPrefabs[numOfBombs].transform.position, bombs[0], timer);
+                i = 0;
+            }
+            
         }
+
     }
 
 }

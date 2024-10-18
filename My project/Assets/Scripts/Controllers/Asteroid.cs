@@ -46,8 +46,8 @@ public class Asteroid : MonoBehaviour
     }
     public void asteroidChunks()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
-        if (distance <= radius)
+        float playerdistance = Vector3.Distance(transform.position, player.position);
+        if (playerdistance <= radius)
         {
             
             List<Vector3> chunks = new List<Vector3>();
