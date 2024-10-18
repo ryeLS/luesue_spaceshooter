@@ -58,13 +58,12 @@ public class Player : MonoBehaviour
         timer = bombSpeed * Time.deltaTime;
         PlayerMovement();
 
-        BombShield();
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    BombShield();
-        //}
-        //EnemyRadar(radarRadius, numOfPoints);
-        //SpawnPowerups(powerUpRadius, numOfPowerups);
+        if (Input.GetKey(KeyCode.S))
+        {
+            BombShield();
+        }
+        EnemyRadar(radarRadius, numOfPoints);
+        SpawnPowerups(powerUpRadius, numOfPowerups);
     }
     void PlayerMovement()
     {
@@ -174,7 +173,7 @@ public class Player : MonoBehaviour
 
             bombPrefabs[i].transform.position = Vector3.MoveTowards(bombPrefabs[i].transform.position, bombs[i], timer);
             
-            if(i == numOfBombs)//resets count so it repeats
+            if(i == numOfBombs-1)//resets count so it repeats
             {
                 bombPrefabs[numOfBombs].transform.position = Vector3.MoveTowards(bombPrefabs[numOfBombs].transform.position, bombs[0], timer);
                 i = 0;
